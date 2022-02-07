@@ -40,28 +40,52 @@ enterKey.addEventListener("click", function () {
         alert('Word is too short')
     }
     else {
-
-        const userWord = getUserWord();
-        if(userWord == word){
-            alert('You guess the word correctly')
-        }else{
-            alert('Not quite')
-            letterPos = 0;
-            rowPos++
+        const inputData = getInputData();
+        for(let i=0;i<=letterBoxes.length -1; i++){
+            if(inputData.green.includes(i)){
+                letterBoxes[i].style.backgroundColor = 'green'
+            }else if(inputData.yellow.includes(i)){
+                letterBoxes[i].style.backgroundColor = 'yellow'
+            }
         }
+        if(inputData.userWord == word){
+            alert("You guessed correct")
+        }
+        letterPos = 0;
+        rowPos++
     }
 })
 
 // turn user input into a string
-const getUserWord = () => {
+const getInputData = () => {
     const wordRow = wordRows[rowPos]
     const letterBoxes = wordRow.children
     var userWord = ''
+    var green = []
+    var yellow = []
+    for(let i=0;i<=letterBoxes.length -1; i++){
+        const letterBox = letterBoxes[i]
+        const letter = letterBox.textContent.trim()
+        if(letter == word[i]){
+            green.push(i)
+        }else if(word.includes(letter)){
+            yellow.push(i)
+        }
+        userWord += letter
+    }
+    return {
+        userWord: userWord,
+        green: green,
+        yellow: yellow
+    };
+}
+
+const checkForHints = () => {
+    const wordRow = wordRows[rowPos]
+    const letterBoxes = wordRow.children
     for(let i=0;i<=letterBoxes.length -1; i++){
         const letterBox = letterBoxes[i]
         const letter = letterBox.textContent.trim()
         userWord += letter
     }
-    console.log(word)
-    return userWord;
 }
